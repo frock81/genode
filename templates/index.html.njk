@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Genode</title>
+	<meta charset=utf-8>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+$(document).ready(function(){
+	var serverTypeExtraInputContainer = $("#server_type_extra_input_container");
+	$("#server_type").change(function(){
+		var selectedServerType = $(this).children("option:selected").val();
+		if (selectedServerType == 'bm') {
+			serverTypeExtraInputContainer.show();
+		}
+		else if (selectedServerType == 'vm') {
+			serverTypeExtraInputContainer.hide();
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<h1>Genode</h1>
+	<form action="/" method='POST'>
+		<div>
+			<label for="server_type">Type of server</label>
+			<select name="server_type" id="server_type">
+				<option value=""></option>
+				<option value="bm"{{ ' selected' if server_type == 'bm' else '' }}>Bare-Metal</option>
+				<option value="vm"{{ ' selected' if server_type == 'vm' else '' }}>Virtual Machine</option>
+			</select>
+			<p>For the Virtual Machine server type LVM is not used. All the disk space will be used.</p>
+			<p>For the Bare-Metal type LVM is used AND RAID (0 or 1) is used depending on the disk ammount.</p>
+		</div>
+		<div id="server_type_extra_input_container" style="display:none;">
+			<div>
+				<label for="disks">Quantity of disks</label>
+				<select name="disks" id="disks">
+					<option value="0"></option>
+					<option value="1"{{ ' selected' if disks == '1' else '' }}>1</option>
+					<option value="2"{{ ' selected' if disks == '2' else '' }}>2</option>
+				</select>
+			</div>
+			<div>
+				<label for="disk_size">Disk size (in GB)</label>
+				<input type="text" name="disk_size" id="disk_size" value="{{ disk_size }}">
+			</div>
+		</div>
+		<input type="submit" value="Enviar">
+	</form>
+</body>
+</html>
